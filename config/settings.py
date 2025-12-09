@@ -11,11 +11,36 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-change-in-prod')
 
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+# FORCE DEBUG FOR TROUBLESHOOTING
+DEBUG = True
+# DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost 127.0.0.1 .onrender.com').split(' ')
+ALLOWED_HOSTS = ['*'] # Relax hosts for debugging
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost 127.0.0.1 .onrender.com').split(' ')
 
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'https://*.onrender.com').split(' ')
+CSRF_TRUSTED_ORIGINS = ['https://ece-tron-lms.onrender.com'] # Explicitly trust your Render URL
+
+# Add basic logging to stdout
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO', # Change to DEBUG if you want verbose
+            'propagate': True,
+        },
+    },
+}
 
 
 # Application definition
