@@ -1,0 +1,44 @@
+{% extends 'courseware/base_course.html' %}
+
+{% block course_content %}
+<div class="max-w-4xl mx-auto space-y-8">
+    <!-- Course Info Card -->
+    <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm flex items-start space-x-6">
+        <div class="w-32 h-32 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+            {% if course.cover_image %}
+            <img src="{{ course.cover_image.url }}" class="w-full h-full object-cover">
+            {% else %}
+            <div class="w-full h-full flex items-center justify-center bg-tron-teal text-white font-bold text-2xl">
+                {{ course.course_code }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="flex-1">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">{{ course.name }}</h1>
+            <p class="text-sm text-gray-500 mb-4">
+                <span class="mr-4"><i class="fas fa-barcode mr-1"></i> {{ course.course_code }}</span>
+                <span class="mr-4"><i class="fas fa-graduation-cap mr-1"></i> {{ course.credits }} Credits</span>
+                <span><i class="fas fa-user mr-1"></i> {{ course.instructor.username }}</span>
+            </p>
+            <div class="prose prose-sm text-gray-600">
+                {{ course.syllabus.content|linebreaks }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Grading Weights -->
+    <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-tron-teal pl-3">Grading Criteria</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {% for weight in course.syllabus.weights.all %}
+            <div class="bg-gray-50 p-4 rounded text-center">
+                <div class="text-2xl font-bold text-tron-teal">{{ weight.percentage }}%</div>
+                <div class="text-sm text-gray-500 font-medium">{{ weight.category_name }}</div>
+            </div>
+            {% empty %}
+            <div class="col-span-4 text-center text-gray-400 italic">No grading weights defined.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

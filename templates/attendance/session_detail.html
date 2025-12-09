@@ -1,0 +1,47 @@
+{% extends 'courseware/base_course.html' %}
+
+{% block course_content %}
+<div class="max-w-2xl mx-auto text-center py-12">
+    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Attendance Session Active</h2>
+        <p class="text-gray-500 mb-8">Share this code with your students. It expires in 5 minutes.</p>
+
+        <div class="text-6xl font-mono font-bold text-tron-teal tracking-widest mb-8">
+            {{ session.code }}
+        </div>
+
+        <div class="flex justify-center items-center space-x-2 text-red-500 font-bold animate-pulse">
+            <i class="fas fa-clock"></i>
+            <span id="timer">05:00</span>
+        </div>
+
+        <div class="mt-8 border-t border-gray-100 pt-8">
+            <h3 class="font-bold text-gray-700 mb-4">Live Check-ins</h3>
+            <div class="flex justify-center -space-x-2">
+                {% for record in session.records.all %}
+                <div class="w-10 h-10 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs font-bold"
+                    title="{{ record.student.username }}">
+                    {{ record.student.username|first|upper }}
+                </div>
+                {% empty %}
+                <span class="text-gray-400 text-sm">Waiting for students...</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple countdown timer logic
+    let timeLeft = 300; // 5 mins
+    const timerEl = document.getElementById('timer');
+    const interval = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+        timerEl.textContent = `${minutes}:${seconds}`;
+        timeLeft--;
+        if (timeLeft < 0) clearInterval(interval);
+    }, 1000);
+</script>
+{% endblock %}

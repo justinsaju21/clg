@@ -1,0 +1,69 @@
+{% extends 'courseware/base_course.html' %}
+
+{% block course_content %}
+<div class="max-w-5xl mx-auto">
+    <!-- Breadcrumb / Header -->
+    <div class="mb-6 border-b border-gray-200 pb-4">
+        <a href="{% url 'courseware:course_tree' course.course_code %}"
+            class="text-sm text-gray-500 hover:text-tron-teal mb-2 block">
+            <i class="fas fa-arrow-left"></i> Back to Courseware
+        </a>
+        <h1 class="text-2xl font-bold text-gray-800">{{ activity.title }}</h1>
+        <p class="text-gray-500 text-sm mt-1">{{ activity.unit.chapter.title }} / {{ activity.unit.title }}</p>
+    </div>
+
+    <!-- Content Area -->
+    <div class="bg-white rounded-lg shadow-sm min-h-[400px]">
+        {% if 'VideoResource' in activity.get_real_instance_class.name %}
+        <!-- Video Player (Mock) -->
+        <div class="aspect-w-16 aspect-h-9 bg-black rounded-lg flex items-center justify-center text-white">
+            <div class="text-center">
+                <i class="fas fa-play-circle text-6xl opacity-80 cursor-pointer hover:opacity-100"></i>
+                <p class="mt-4">Video Source: {{ activity.videoresource.video_url }}</p>
+            </div>
+        </div>
+        {% elif 'PDFResource' in activity.get_real_instance_class.name %}
+        <!-- PDF Viewer (Iframe) -->
+        <div class="w-full h-[600px] bg-gray-100 flex items-center justify-center border border-gray-200 rounded">
+            <p>PDF Content: {{ activity.pdfresource.file.url }}</p>
+            <!-- In production, us <iframe src="{{ activity.pdfresource.file.url }}" width="100%" height="100%"></iframe> -->
+        </div>
+        {% elif 'Assignment' in activity.get_real_instance_class.name %}
+        <div class="p-8">
+            <h3 class="font-bold text-lg mb-4">Instructions</h3>
+            <div class="prose max-w-none text-gray-700 mb-8">
+                {{ activity.description|linebreaks }}
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded border border-gray-200">
+                <h4 class="font-bold text-gray-800 mb-4">Submission</h4>
+                {% if activity.assignment.allow_code_editor %}
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Verilog Editor (Monaco)</label>
+                    <div id="monaco-editor" class="h-64 border border-gray-300 rounded bg-white"></div>
+                    <p class="text-xs text-gray-400 mt-1">Monaco Editor Placeholder</p>
+                </div>
+                {% endif %}
+
+                {% if activity.assignment.allow_file_upload %}
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">File Upload</label>
+                    <input type="file"
+                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-tron-teal file:text-white hover:file:bg-tron-teal-dark" />
+                </div>
+                {% endif %}
+
+                <button
+                    class="bg-tron-teal text-white px-6 py-2 rounded shadow hover:bg-tron-teal-dark font-medium transition-colors">
+                    Submit Assignment
+                </button>
+            </div>
+        </div>
+        {% else %}
+        <div class="p-8 text-center text-gray-500">
+            Content type not explicitly handled in this prototype view.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

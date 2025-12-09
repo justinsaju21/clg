@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="flex flex-1 h-[calc(100vh-64px)] overflow-hidden">
+    <!-- Fixed Left Sidebar -->
+    <aside class="w-64 bg-gray-50 border-r border-gray-200 flex-shrink-0 flex flex-col overflow-y-auto">
+
+        <!-- Course Info Mini Header -->
+        <div class="p-4 border-b border-gray-200 bg-white sticky top-0 z-10">
+            <h2 class="font-bold text-gray-800 text-sm leading-tight mb-1">{{ course.name }}</h2>
+            <p class="text-xs text-gray-500">{{ course.course_code }}</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex-1 py-4 space-y-1">
+            <a href="{% url 'courseware:course_home' course.course_code %}"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'home' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-home w-6 text-center mr-2"></i>
+                Home
+            </a>
+            <a href="{% url 'courseware:course_syllabus' course.course_code %}"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'syllabus' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-book w-6 text-center mr-2"></i>
+                Syllabus
+            </a>
+            <a href="{% url 'courseware:course_tree' course.course_code %}"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'courseware' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-layer-group w-6 text-center mr-2"></i>
+                Courseware
+            </a>
+            <a href="#"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'assignments' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-edit w-6 text-center mr-2"></i>
+                Assignments
+            </a>
+            <a href="#"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'quiz' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-question-circle w-6 text-center mr-2"></i>
+                Online Quiz
+            </a>
+            <a href="#"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'discussions' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-comments w-6 text-center mr-2"></i>
+                Discussions
+            </a>
+            <a href="#"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'grades' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-chart-bar w-6 text-center mr-2"></i>
+                Grades
+            </a>
+            <a href="#"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'members' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-users w-6 text-center mr-2"></i>
+                Members
+            </a>
+            <a href="#"
+                class="flex items-center px-4 py-3 text-sm font-medium {% if active_tab == 'attendance' %}bg-white text-tron-teal border-l-4 border-tron-teal shadow-sm{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                <i class="fas fa-clock w-6 text-center mr-2"></i>
+                Attendance
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto bg-white p-8">
+        {% block course_content %}{% endblock %}
+    </main>
+</div>
+{% endblock %}

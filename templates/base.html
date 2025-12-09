@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ECE-Tron LMS{% endblock %}</title>
+    <!-- Tailwind CSS (Using CDN for simplicity in this phase, can be replaced with build step later) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              tron: {
+                teal: '#1DB1B0', // Match the teal in the screenshots
+                hover: '#169695',
+                bg: '#F5F7F9',
+                nav: '#2C3E50',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Alpine.js for lightweight interactions -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-tron-bg text-gray-800 font-sans antialiased">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-white border-b border-gray-200 h-16 fixed w-full top-0 z-50 flex items-center justify-between px-6 shadow-sm">
+        <!-- Left: Logo & Menu -->
+        <div class="flex items-center space-x-4">
+            <button class="text-gray-500 hover:text-tron-teal">
+                <i class="fas fa-th-large text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-2">
+                <!-- Placeholder Logo -->
+                <div class="w-8 h-8 bg-tron-teal rounded-full flex items-center justify-center text-white font-bold">E</div>
+                <span class="text-xl font-bold text-gray-700 tracking-tight">ECE-Tron</span>
+            </div>
+            <div class="h-6 w-px bg-gray-300 mx-2"></div>
+            <span class="text-gray-500 text-sm">Course List</span>
+        </div>
+
+        <!-- Right: Actions & Profile -->
+        <div class="flex items-center space-x-6">
+            <button class="text-gray-500 hover:text-tron-teal text-sm font-medium">Menu <i class="fas fa-chevron-down text-xs ml-1"></i></button>
+            
+            <div class="flex items-center space-x-4 text-gray-400">
+                <button class="hover:text-tron-teal"><i class="fas fa-calendar-alt"></i></button>
+                <button class="hover:text-tron-teal relative">
+                    <i class="fas fa-bell"></i>
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1 rounded-full">99+</span>
+                </button>
+                <button class="hover:text-tron-teal"><i class="fas fa-question-circle"></i></button>
+            </div>
+
+            <div class="flex items-center space-x-2 cursor-pointer">
+                <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden border border-gray-300">
+                    <img src="https://ui-avatars.com/api/?name=Justin+Jacob&background=1DB1B0&color=fff" alt="User" class="w-full h-full object-cover">
+                </div>
+                <span class="text-sm font-medium text-gray-700 hidden md:block">Justin Jacob... <i class="fas fa-chevron-down text-xs ml-1"></i></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <div class="pt-16 min-h-screen flex flex-col">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block footer %}
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 text-xs py-6 mt-auto text-center">
+        <p>Copyright © 2025 ECE-Tron. All Rights Reserved.</p>
+        <p class="mt-1">Best viewed with user confidence :)</p>
+    </footer>
+    {% endblock %}
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
