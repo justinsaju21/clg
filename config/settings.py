@@ -105,13 +105,6 @@ DATABASES = {
         default=os.environ.get('DATABASE_URL', f'sqlite:///{BASE_DIR / "db.sqlite3"}'),
         conn_max_age=600,
         conn_health_checks=True,
-        ssl_require=True,
-        # 'engine_options' is not a valid arg for dj_database_url.config() directly. 
-        # We must pass OPTIONS dictionary via the 'options' argument if supported, 
-        # or rely on the query string in the URL.
-        # However, for Supabase Transaction Mode, we usually just need the query param ?pgbouncer=true 
-        # or disable the cursor at the engine level if using a specific backend.
-        # Let's clean this up to standard usage.
     )
 }
 # Monkey-patching or manual set is safer if config() fails.
