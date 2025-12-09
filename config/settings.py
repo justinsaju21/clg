@@ -90,8 +90,9 @@ DATABASES = {
     )
 }
 # Monkey-patching or manual set is safer if config() fails.
+# Monkey-patching or manual set is safer if config() fails.
 # Supabase Transaction Mode simply needs DISABLE_SERVER_SIDE_CURSORS = True
-DATABASES['default']['OPTIONS'] = {'DISABLE_SERVER_SIDE_CURSORS': True}
+DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
