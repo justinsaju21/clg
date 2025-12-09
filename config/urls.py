@@ -5,6 +5,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('apps.core.urls')),
+    path('course/', include('apps.courseware.urls')),
+    path('assessments/', include('apps.assessments.urls')),
+    path('attendance/', include('apps.attendance.urls')),
+    path('accounts/', include('django.contrib.auth.urls')), # For standard login/logout views
 ]
 
 if settings.DEBUG:

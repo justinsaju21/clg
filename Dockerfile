@@ -24,6 +24,10 @@ RUN pip install -r requirements.txt
 # Copy project
 COPY . /app/
 
+# Collect static files for Whitenoise (requires dummy secret key)
+ENV SECRET_KEY=dummy-build-key
+RUN python manage.py collectstatic --noinput
+
 # Create a non-root user and switch to it (Render Best Practice)
 RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
