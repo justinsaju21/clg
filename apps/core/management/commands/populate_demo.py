@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from apps.core.models import User, Course, Syllabus, GradingWeight
-from apps.courseware.models import Chapter, Unit, VideoResource, PDFResource, Assignment, Quiz, Discussion
+from apps.core.models import User, Course, Syllabus
+from apps.courseware.models import Chapter, Unit, VideoResource, PDFResource, Assignment
 import datetime
 
 class Command(BaseCommand):
@@ -25,38 +25,38 @@ class Command(BaseCommand):
         # ==========================================
         # Course 1: System-on-Chip Testing
         # ==========================================
-        course_soc, created = Course.objects.get_or_create(course_code='IICD504', defaults={
+        course_soc, _ = Course.objects.get_or_create(course_code='IICD504', defaults={
             'name': 'SYSTEM-ON-CHIP TESTING',
             'instructor': instructor,
             'credits': 4,
             'is_public': True,
-            'gamification_mode': False # Disabled as per request
+            'gamification_mode': False
         })
         
-        if created:
-             # Syllabus
-            Syllabus.objects.create(course=course_soc, content="# Objectives\nMaster SoC testing methodologies.")
+        # Ensure Syllabus
+        Syllabus.objects.get_or_create(course=course_soc, defaults={'content': "# Objectives\nMaster SoC testing methodologies."})
 
-            # Chapter 1: Overview
-            ch_over = Chapter.objects.create(course=course_soc, title="00_overview", order=1)
-            u_over = Unit.objects.create(chapter=ch_over, title="00_overview", order=1)
-            VideoResource.objects.create(unit=u_over, title="Overview Video", video_url="https://www.youtube.com/watch?v=gI-qXk7XojA", duration_minutes=10, order=1)
+        # CH1: Overview
+        ch_over, _ = Chapter.objects.get_or_create(course=course_soc, title="00_overview", defaults={'order': 1})
+        u_over, _ = Unit.objects.get_or_create(chapter=ch_over, title="00_overview", defaults={'order': 1})
+        VideoResource.objects.get_or_create(unit=u_over, title="Overview Video", defaults={'video_url': "https://www.youtube.com/watch?v=gI-qXk7XojA", 'duration_minutes': 10, 'order': 1})
 
-            # Chapter 2: Introduction
-            ch_intro = Chapter.objects.create(course=course_soc, title="01_Introduction", order=2)
-            u_intro = Unit.objects.create(chapter=ch_intro, title="01_Introduction", order=1)
-            VideoResource.objects.create(unit=u_intro, title="Intro Video", video_url="https://www.youtube.com/watch?v=gI-qXk7XojA", duration_minutes=15, order=1)
-            PDFResource.objects.create(unit=u_intro, title="[NSYSU/SRM]CH1 Mind map Finished", file="demo.pdf", order=2)
+        # CH2: Introduction
+        ch_intro, _ = Chapter.objects.get_or_create(course=course_soc, title="01_Introduction", defaults={'order': 2})
+        u_intro, _ = Unit.objects.get_or_create(chapter=ch_intro, title="01_Introduction", defaults={'order': 1})
+        VideoResource.objects.get_or_create(unit=u_intro, title="Intro Video", defaults={'video_url': "https://www.youtube.com/watch?v=gI-qXk7XojA", 'duration_minutes': 15, 'order': 1})
+        PDFResource.objects.get_or_create(unit=u_intro, title="[NSYSU/SRM]CH1 Mind map Finished", defaults={'file': "demo.pdf", 'order': 2})
 
-            # Chapter 3: Fault Model
-            ch_fault = Chapter.objects.create(course=course_soc, title="02_Fault model", order=3)
-            u_fault = Unit.objects.create(chapter=ch_fault, title="Fault Models", order=1)
-            PDFResource.objects.create(unit=u_fault, title="Stuck-at Faults Readings", file="faults.pdf", order=1)
+        # CH3: Fault Model
+        ch_fault, _ = Chapter.objects.get_or_create(course=course_soc, title="02_Fault model", defaults={'order': 3})
+        u_fault, _ = Unit.objects.get_or_create(chapter=ch_fault, title="Fault Models", defaults={'order': 1})
+        PDFResource.objects.get_or_create(unit=u_fault, title="Stuck-at Faults Readings", defaults={'file': "faults.pdf", 'order': 1})
+
 
         # ==========================================
         # Course 2: Digital Logic Design
         # ==========================================
-        course_dld, created = Course.objects.get_or_create(course_code='ECE-201', defaults={
+        course_dld, _ = Course.objects.get_or_create(course_code='ECE-201', defaults={
             'name': 'Digital Logic Design',
             'instructor': instructor,
             'credits': 3,
@@ -64,21 +64,23 @@ class Command(BaseCommand):
             'gamification_mode': False
         })
 
-        if created:
-            Syllabus.objects.create(course=course_dld, content="# Objectives\nDesign complex digital systems.")
-            
-            ch1 = Chapter.objects.create(course=course_dld, title="Number Systems", order=1)
-            u1 = Unit.objects.create(chapter=ch1, title="Binary & Hex", order=1)
-            VideoResource.objects.create(unit=u1, title="Binary Arithmetic", video_url="https://www.youtube.com/watch?v=gI-qXk7XojA", duration_minutes=12, order=1)
-            
-            ch2 = Chapter.objects.create(course=course_dld, title="K-Maps", order=2)
-            u2 = Unit.objects.create(chapter=ch2, title="Simplification", order=1)
-            Assignment.objects.create(unit=u2, title="K-Map Homework 1", due_date=datetime.datetime.now() + datetime.timedelta(days=5), order=1)
+        Syllabus.objects.get_or_create(course=course_dld, defaults={'content': "# Objectives\nDesign complex digital systems."})
+        
+        ch1, _ = Chapter.objects.get_or_create(course=course_dld, title="Number Systems", defaults={'order': 1})
+        u1, _ = Unit.objects.get_or_create(chapter=ch1, title="Binary & Hex", defaults={'order': 1})
+        VideoResource.objects.get_or_create(unit=u1, title="Binary Arithmetic", defaults={'video_url': "https://www.youtube.com/watch?v=gI-qXk7XojA", 'duration_minutes': 12, 'order': 1})
+        
+        ch2, _ = Chapter.objects.get_or_create(course=course_dld, title="K-Maps", defaults={'order': 2})
+        u2, _ = Unit.objects.get_or_create(chapter=ch2, title="Simplification", defaults={'order': 1})
+        
+        # Assignment needs unique title per unit
+        if not Assignment.objects.filter(unit=u2, title="K-Map Homework 1").exists():
+            Assignment.objects.create(unit=u2, title="K-Map Homework 1", due_date=timezone.now() + datetime.timedelta(days=5), order=1)
 
         # ==========================================
         # Course 3: VLSI Design and Technology
         # ==========================================
-        course_vlsi, created = Course.objects.get_or_create(course_code='ECE-405', defaults={
+        course_vlsi, _ = Course.objects.get_or_create(course_code='ECE-405', defaults={
             'name': 'VLSI Design and Technology',
             'instructor': instructor,
             'credits': 4,
@@ -86,15 +88,14 @@ class Command(BaseCommand):
             'gamification_mode': False
         })
 
-        if created:
-            Syllabus.objects.create(course=course_vlsi, content="# Objectives\nCMOS Transistor theory.")
-            
-            ch_mos = Chapter.objects.create(course=course_vlsi, title="MOSFET Theory", order=1)
-            u_mos = Unit.objects.create(chapter=ch_mos, title="IV Characteristics", order=1)
-            PDFResource.objects.create(unit=u_mos, title="MOSFET Equations", file="idvg.pdf", order=1)
-            
-            ch_fab = Chapter.objects.create(course=course_vlsi, title="Fabrication Process", order=2)
-            u_fab = Unit.objects.create(chapter=ch_fab, title="Lithography", order=1)
-            VideoResource.objects.create(unit=u_fab, title="Photolithography Steps", video_url="https://www.youtube.com/watch?v=gI-qXk7XojA", duration_minutes=20, order=1)
+        Syllabus.objects.get_or_create(course=course_vlsi, defaults={'content': "# Objectives\nCMOS Transistor theory."})
+        
+        ch_mos, _ = Chapter.objects.get_or_create(course=course_vlsi, title="MOSFET Theory", defaults={'order': 1})
+        u_mos, _ = Unit.objects.get_or_create(chapter=ch_mos, title="IV Characteristics", defaults={'order': 1})
+        PDFResource.objects.get_or_create(unit=u_mos, title="MOSFET Equations", defaults={'file': "idvg.pdf", 'order': 1})
+        
+        ch_fab, _ = Chapter.objects.get_or_create(course=course_vlsi, title="Fabrication Process", defaults={'order': 2})
+        u_fab, _ = Unit.objects.get_or_create(chapter=ch_fab, title="Lithography", defaults={'order': 1})
+        VideoResource.objects.get_or_create(unit=u_fab, title="Photolithography Steps", defaults={'video_url': "https://www.youtube.com/watch?v=gI-qXk7XojA", 'duration_minutes': 20, 'order': 1})
 
-        self.stdout.write(self.style.SUCCESS('Successfully populated New Demo Courses!'))
+        self.stdout.write(self.style.SUCCESS('Successfully populated New Demo Courses (Idempotent)!'))
