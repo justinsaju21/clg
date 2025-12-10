@@ -13,14 +13,8 @@ class BreakthroughModeMiddleware:
         return self.get_response(request)
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        # Only check on activity detail views
-        if 'activity_id' not in view_kwargs:
-            return None
-        
-        try:
-            activity = LearningActivity.objects.get(id=view_kwargs['activity_id'])
-        except LearningActivity.DoesNotExist:
-            return None
+        return None # Disable locking mechanism for now as per user request
+
 
         # Check if activity requires a previous one
         if activity.previous_activity_required:
