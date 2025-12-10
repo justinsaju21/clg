@@ -139,7 +139,7 @@
             labels: ['Video', 'Quiz', 'Discussion', 'Assignment', 'Attendance'],
             datasets: [{
                 label: 'Performance',
-                data: [{{ radar_data| join: ", " }}],
+                data: {{ radar_data }}, // Fixed: pass list directly
         fill: true,
         backgroundColor: 'rgba(23, 162, 184, 0.2)', // Tron Teal transparent
         borderColor: 'rgb(23, 162, 184)',
