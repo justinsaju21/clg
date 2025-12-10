@@ -9,4 +9,6 @@ pip install -r requirements.txt
 python manage.py collectstatic --no-input
 
 # Apply database migrations
-python manage.py migrate
+echo "Runnning Database Migrations..."
+python manage.py migrate || { echo "MIGRATION FAILED"; exit 1; }
+echo "Migrations Complete."
