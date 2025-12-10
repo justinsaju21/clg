@@ -12,6 +12,10 @@ python manage.py migrate
 echo "Creating superuser..."
 python manage.py initadmin
 
+# Populate Demo Data (Idempotent)
+echo "Populating Demo Courses..."
+python manage.py populate_demo
+
 # Start Gunicorn
 echo "Starting Gunicorn..."
 exec gunicorn --bind 0.0.0.0:8000 config.wsgi:application
